@@ -1,0 +1,24 @@
+# Terraform working directory and generated files
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfplan
+*.tfplan.json
+
+# Local Terraform variables may contain credentials
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+
+# Common local credential and private-key files
+*.pem
+*.key
+*.p12
+*.pfx
+*.kubeconfig
+.env
+.env.*
+!.env.example
