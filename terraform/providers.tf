@@ -8,10 +8,10 @@ terraform {
 }
 
 provider "openstack" {
-  auth_url                    = "https://tr-ist-01-apigw.portvmind.com/v3"
-  portvmind_credential_id     = var.portvmind_credential_id
-  portvmind_credential_secret = var.portvmind_credential_secret
-  tenant_id                   = var.tenant_id
-  domain_name                 = "Default"
-  region                      = "tr-ist-01"
+  auth_url                      = "https://tr-ist-01-apigw.portvmind.com/v3"
+  application_credential_id     = var.portvmind_credential_id
+  application_credential_secret = var.portvmind_credential_secret
+  tenant_id                     = var.tenant_id
+  domain_name                   = "Default"
+  region                        = "tr-ist-01"
 }
