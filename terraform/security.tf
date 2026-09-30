@@ -90,15 +90,26 @@ resource "openstack_networking_secgroup_rule_v2" "backend_to_nginx" {
   security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
 }
 
-resource "openstack_networking_secgroup_rule_v2" "backend_ssh" {
+resource "openstack_networking_secgroup_rule_v2" "backend_ssh_ingress" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "tcp"
   port_range_min    = 22
   port_range_max    = 22
-  remote_ip_prefix  = var.admin_cidr
+  remote_group_id = openstack_networking_secgroup_v2.nginx_secgroup.id
   security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
 }
+
+resource "openstack_networking_secgroup_rule_v2" "backend_ssh_egress" {
+  direction         = "egress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 22
+  port_range_max    = 22
+  remote_group_id = openstack_networking_secgroup_v2.nginx_secgroup.id
+  security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
+}
+
 
 resource "openstack_networking_secgroup_rule_v2" "backend_http" {
   direction         = "egress"
@@ -128,4 +139,44 @@ resource "openstack_networking_secgroup_rule_v2" "backend_dns" {
   port_range_max    = 53
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "nginx_dhcp_egress" {
+  security_group_id = openstack_networking_secgroup_v2.nginx_secgroup.id
+  direction         = "egress"
+  ethertype         = "IPv4"
+  protocol          = "udp"
+  port_range_min    = 67
+  port_range_max    = 67
+  remote_ip_prefix  = "0.0.0.0/0"
+}
+
+resource "openstack_networking_secgroup_rule_v2" "nginx_dhcp_ingress" {
+  security_group_id = openstack_networking_secgroup_v2.nginx_secgroup.id
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "udp"
+  port_range_min    = 68
+  port_range_max    = 68
+  remote_ip_prefix  = "0.0.0.0/0"
+}
+
+resource "openstack_networking_secgroup_rule_v2" "backend_dhcp_egress" {
+  security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
+  direction         = "egress"
+  ethertype         = "IPv4"
+  protocol          = "udp"
+  port_range_min    = 67
+  port_range_max    = 67
+  remote_ip_prefix  = "0.0.0.0/0"
+}
+
+resource "openstack_networking_secgroup_rule_v2" "backend_dhcp_ingress" {
+  security_group_id = openstack_networking_secgroup_v2.backend_secgroup.id
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "udp"
+  port_range_min    = 68
+  port_range_max    = 68
+  remote_ip_prefix  = "0.0.0.0/0"
 }
