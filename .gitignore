@@ -22,3 +22,4 @@ crash.*.log
 .env
 .env.*
 !.env.example
+devops-lab-key

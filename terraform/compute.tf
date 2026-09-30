@@ -30,7 +30,7 @@ resource "openstack_compute_instance_v2" "nginx_vm" {
 resource "openstack_compute_instance_v2" "backend_vm" {
   name            = "backend-vm"
   flavor_id       = var.medium_flavor_id
-  key_pair        = openstack_compute_keypair_v2.devops_lab_key
+  key_pair        = openstack_compute_keypair_v2.devops_lab_key.name
   security_groups = [openstack_networking_secgroup_v2.backend_secgroup.name] # I will add the secgroup
 
   block_device {
