@@ -1,0 +1,13 @@
+---
+common_packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - vim
+  - dnsutils
+  - jq
+  - htop
+  - tcpdump
+  - unzip
+
+common_timezone: Europe/Istanbul

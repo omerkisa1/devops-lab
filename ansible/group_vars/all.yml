@@ -1,0 +1,3 @@
+---
+app_environment: dev
+test_message: "Test message from dev environment"
