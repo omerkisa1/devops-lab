@@ -16,3 +16,9 @@
   become: true
   roles:
     - backend
+
+- name: Docker Setup
+  hosts: backend
+  become: true
+  roles:
+    - docker
