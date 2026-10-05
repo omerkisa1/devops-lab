@@ -34,6 +34,7 @@ server {
     location / {
         limit_req zone=app_limit burst=10;
         limit_req_status 429;
+        proxy_read_timeout 3s;
 
 
         proxy_pass http://backend_app;

@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 import socket
 from datetime import datetime, timezone
+import asyncio
+
 
 app = FastAPI()
 
@@ -19,3 +21,11 @@ async def root(request: Request):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+@app.get("/slow")
+async def slow():
+    await asyncio.sleep(10)
+
+    return {
+        "message": "Slow response completed"
+    }
