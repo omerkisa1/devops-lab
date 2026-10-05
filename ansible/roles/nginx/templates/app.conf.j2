@@ -1,5 +1,13 @@
 limit_req_zone $binary_remote_addr zone=app_limit:10m rate=1r/s;
 
+log_format app_log
+    '$remote_addr '
+    '"$request" '
+    'status=$status '
+    'request_time=$request_time '
+    'upstream_time=$upstream_response_time '
+    'upstream=$upstream_addr';
+
 upstream backend_app {
     server {{ backend_private_ip }}:{{ backend_port }};
 }
@@ -14,6 +22,9 @@ server {
 server {
     listen 443 ssl http2;
     server_name _;
+
+    access_log /var/log/nginx/app_access.log app_log;
+    error_log /var/log/nginx/app_error.log;
 
     ssl_certificate {{ nginx_certificate_path }};
     ssl_certificate_key {{ nginx_private_key_path }};
