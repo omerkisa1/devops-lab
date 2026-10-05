@@ -18,10 +18,12 @@
       - "{{ docker_arch_map[ansible_facts['architecture']] }}"
     signed_by: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  register: docker_repo
 
 - name: Update apt cache after adding Docker repository
   ansible.builtin.apt:
     update_cache: true
+  when: docker_repo.changed
 
 - name: Install Docker packages
   ansible.builtin.apt:
