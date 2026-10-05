@@ -24,3 +24,5 @@ crash.*.log
 !.env.example
 devops-lab-key
 openrc.sh
+# Ignore local nginx role defaults
+ansible/roles/nginx/defaults/main.yml
