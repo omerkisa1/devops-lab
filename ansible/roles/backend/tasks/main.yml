@@ -21,6 +21,7 @@
   community.docker.docker_image:
     name: "{{ backend_app_image }}"
     source: build
+    state: present
     build:
       path: "{{ backend_app_dir }}"
 

@@ -1,3 +1,5 @@
+limit_req_zone $binary_remote_addr zone=app_limit:10m rate=1r/s;
+
 upstream backend_app {
     server {{ backend_private_ip }}:{{ backend_port }};
 }
@@ -19,6 +21,10 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
 
     location / {
+        limit_req zone=app_limit burst=10;
+        limit_req_status 429;
+
+
         proxy_pass http://backend_app;
 
         proxy_set_header Host $host;
