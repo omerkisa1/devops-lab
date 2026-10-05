@@ -18,9 +18,14 @@
   become: true
   roles:
     - backend
+    - docker
+  tags:
+    - backend
 
 - name: Docker Setup
   hosts: backend
   become: true
   roles:
+    - docker
+  tags:
     - docker

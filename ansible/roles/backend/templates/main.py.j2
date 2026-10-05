@@ -1,0 +1,21 @@
+from fastapi import FastAPI, Request
+import socket
+from datetime import datetime, timezone
+
+app = FastAPI()
+
+
+@app.get("/")
+async def root(request: Request):
+    return {
+        "hostname": socket.gethostname(),
+        "time": datetime.now(timezone.utc).isoformat(),
+        "x_forwarded_for": request.headers.get("x-forwarded-for"),
+        "x_forwarded_proto": request.headers.get("x-forwarded-proto"),
+        "host": request.headers.get("host"),
+    }
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
