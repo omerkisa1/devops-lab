@@ -1,7 +1,7 @@
 ---
-db_name: appdb
 db_user: appuser
 db_port: 5432
+db_name: main_db
 
 db_listen_address: "{{ ansible_facts['default_ipv4']['address'] }}"
 backend_db_cidr: "{{ vault_backend_db_cidr }}"

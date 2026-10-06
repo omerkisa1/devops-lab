@@ -13,7 +13,24 @@
     name: postgresql
     state: started
     enabled: true
+
+- name: Configure PostgreSQL listen address
+  ansible.builtin.lineinfile:
+    path: /etc/postgresql/14/main/postgresql.conf
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '{{ vault_db_host }}'"
+  notify: Restart PostgreSQL
   
+- name: Allow backend application to connect
+  ansible.builtin.lineinfile:
+    path: /etc/postgresql/14/main/pg_hba.conf
+    line: "host {{ db_name }} {{ db_user }} {{ vault_backend_db_cidr }} scram-sha-256"
+    state: present
+  notify: Restart PostgreSQL
+
+- name: Apply PostgreSQL configuration changes
+  ansible.builtin.meta: flush_handlers
+
 - name: Create PostgreSQL application user
   community.postgresql.postgresql_user:
     name: "{{ db_user }}"
@@ -24,7 +41,7 @@
 
 - name: Create a new database with name "main_db"
   community.postgresql.postgresql_db:
-    name: main_db
+    name: "{{ db_name }}"
     comment: My first database
   become: true
   become_user: postgres
