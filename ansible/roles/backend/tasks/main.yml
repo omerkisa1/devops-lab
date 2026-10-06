@@ -35,6 +35,15 @@
     restart_policy: unless-stopped
     published_ports:
       - "{{ backend_app_port }}:8000"
+    
+    env:
+      DB_HOST: "{{ vault_db_host }}"
+      DB_PORT: "{{ db_port | string }}"
+      DB_NAME: "{{ db_name }}"
+      DB_USER: "{{ db_user }}"
+      DB_PASSWORD: "{{ vault_db_password }}"
+     
+
 
     healthcheck:
       test:

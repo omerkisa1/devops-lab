@@ -1,3 +1,7 @@
 ---
 app_environment: dev
 test_message: "Test message from dev environment"
+
+db_name: appdb
+db_user: appuser
+db_port: 5432
