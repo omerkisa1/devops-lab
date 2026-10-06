@@ -29,3 +29,14 @@
     - docker
   tags:
     - docker
+
+- name: Backend Setup
+  hosts: database
+  become: true
+  vars_files:
+    - vault.yml
+  roles:
+    - common
+    - database
+  tags:
+    - database
