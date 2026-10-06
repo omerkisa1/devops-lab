@@ -1,0 +1,44 @@
+---
+- name: Install PostgreSQL dependencies
+  ansible.builtin.apt:
+    name:
+      - postgresql
+      - libpq-dev
+      - python3-psycopg2
+      - acl
+    state: present
+
+- name: Check postgres service
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true
+  
+- name: Create PostgreSQL application user
+  community.postgresql.postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ vault_db_password }}"
+    state: present
+  become: true
+  become_user: postgres
+
+- name: Create a new database with name "main_db"
+  community.postgresql.postgresql_db:
+    name: main_db
+    comment: My first database
+  become: true
+  become_user: postgres
+
+- name: Copy sql script file to DB VM
+  ansible.builtin.copy:
+    src: schema.sql
+    dest: /tmp/schema.sql
+    mode: "0644"
+  
+  
+- name: Run sql script
+  community.postgresql.postgresql_script:
+    login_db: main_db
+    path: /tmp/schema.sql
+  become: true
+  become_user: postgres
