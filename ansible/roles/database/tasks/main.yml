@@ -16,14 +16,14 @@
 
 - name: Configure PostgreSQL listen address
   ansible.builtin.lineinfile:
-    path: /etc/postgresql/14/main/postgresql.conf
+    path: /etc/postgresql/16/main/postgresql.conf
     regexp: "^#?listen_addresses"
     line: "listen_addresses = '{{ vault_db_host }}'"
   notify: Restart PostgreSQL
   
 - name: Allow backend application to connect
   ansible.builtin.lineinfile:
-    path: /etc/postgresql/14/main/pg_hba.conf
+    path: /etc/postgresql/16/main/pg_hba.conf
     line: "host {{ db_name }} {{ db_user }} {{ vault_backend_db_cidr }} scram-sha-256"
     state: present
   notify: Restart PostgreSQL
@@ -55,7 +55,7 @@
   
 - name: Run sql script
   community.postgresql.postgresql_script:
-    login_db: main_db
+    login_db: "{{ db_name }}"
     path: /tmp/schema.sql
   become: true
   become_user: postgres
