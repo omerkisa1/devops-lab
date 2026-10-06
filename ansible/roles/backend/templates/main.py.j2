@@ -2,7 +2,8 @@ from fastapi import FastAPI, Request
 import socket
 from datetime import datetime, timezone
 import asyncio
-
+import os
+import psycopg
 
 app = FastAPI()
 
@@ -29,3 +30,32 @@ async def slow():
     return {
         "message": "Slow response completed"
     }
+
+import os
+import psycopg
+
+
+@app.get("/db-health")
+def db_health():
+    try:
+        with psycopg.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+        ) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT 1;")
+                result = cursor.fetchone()
+
+        return {
+            "database": "connected",
+            "result": result[0]
+        }
+
+    except Exception as e:
+        return {
+            "database": "disconnected",
+            "error": str(e)
+        }
