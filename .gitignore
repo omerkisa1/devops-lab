@@ -26,3 +26,4 @@ devops-lab-key
 openrc.sh
 # Ignore local nginx role defaults
 ansible/roles/nginx/defaults/main.yml
+ansible/vault.yml
