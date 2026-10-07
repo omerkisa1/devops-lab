@@ -69,3 +69,46 @@ resource "openstack_compute_instance_v2" "db_vm" {
   }
 
 }
+
+
+### rke2
+
+resource "openstack_compute_instance_v2" "rke2_master_vm" {
+  name            = "rke2-master-vm"
+  flavor_id       = var.medium_flavor_id
+  key_pair        = openstack_compute_keypair_v2.devops_lab_key.name
+  security_groups = [openstack_networking_secgroup_v2.master_secgroup.name]
+
+  block_device {
+    uuid                  = var.ubuntu_image_id
+    source_type           = "image"
+    destination_type      = "volume"
+    volume_size           = 20
+    boot_index            = 0
+    delete_on_termination = true
+  }
+
+  network {
+    uuid = openstack_networking_network_v2.devops_lab_network.id
+  }
+}
+
+resource "openstack_compute_instance_v2" "rke2_worker_vm" {
+  name            = "rke2-worker-vm"
+  flavor_id       = var.medium_flavor_id
+  key_pair        = openstack_compute_keypair_v2.devops_lab_key.name
+  security_groups = [openstack_networking_secgroup_v2.worker_secgroup.name]
+
+  block_device {
+    uuid                  = var.ubuntu_image_id
+    source_type           = "image"
+    destination_type      = "volume"
+    volume_size           = 20
+    boot_index            = 0
+    delete_on_termination = true
+  }
+
+  network {
+    uuid = openstack_networking_network_v2.devops_lab_network.id
+  }
+}
