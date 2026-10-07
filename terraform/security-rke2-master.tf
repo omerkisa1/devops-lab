@@ -22,16 +22,6 @@ resource "openstack_networking_secgroup_rule_v2" "master_api_from_worker" {
   security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
 }
 
-resource "openstack_networking_secgroup_rule_v2" "master_api_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 6443
-  port_range_max    = 6443
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
 resource "openstack_networking_secgroup_rule_v2" "master_supervisor_from_worker" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -39,16 +29,6 @@ resource "openstack_networking_secgroup_rule_v2" "master_supervisor_from_worker"
   port_range_min    = 9345
   port_range_max    = 9345
   remote_group_id   = openstack_networking_secgroup_v2.worker_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "master_supervisor_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 9345
-  port_range_max    = 9345
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
   security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
 }
 
@@ -62,16 +42,6 @@ resource "openstack_networking_secgroup_rule_v2" "master_kubelet_from_worker" {
   security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
 }
 
-resource "openstack_networking_secgroup_rule_v2" "master_kubelet_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 10250
-  port_range_max    = 10250
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
 resource "openstack_networking_secgroup_rule_v2" "master_vxlan_from_worker" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -82,16 +52,6 @@ resource "openstack_networking_secgroup_rule_v2" "master_vxlan_from_worker" {
   security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
 }
 
-resource "openstack_networking_secgroup_rule_v2" "master_vxlan_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "udp"
-  port_range_min    = 8472
-  port_range_max    = 8472
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
 resource "openstack_networking_secgroup_rule_v2" "master_canal_health_from_worker" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -99,45 +59,5 @@ resource "openstack_networking_secgroup_rule_v2" "master_canal_health_from_worke
   port_range_min    = 9099
   port_range_max    = 9099
   remote_group_id   = openstack_networking_secgroup_v2.worker_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "master_canal_health_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 9099
-  port_range_max    = 9099
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "master_etcd" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 2379
-  port_range_max    = 2381
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "master_nodeport_from_worker" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 30000
-  port_range_max    = 32767
-  remote_group_id   = openstack_networking_secgroup_v2.worker_secgroup.id
-  security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "master_nodeport_from_master" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 30000
-  port_range_max    = 32767
-  remote_group_id   = openstack_networking_secgroup_v2.master_secgroup.id
   security_group_id = openstack_networking_secgroup_v2.master_secgroup.id
 }
